@@ -86,3 +86,13 @@ button {
 .sidebar-link {
   cursor: pointer;
 }
+
+.badge-success {
+  background: var(--color-success);
+  color: #ffffff;
+}
+
+.badge-warning {
+  background: var(--color-warning);
+  color: #000000;
+}

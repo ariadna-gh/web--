@@ -10,6 +10,28 @@
   <link rel="stylesheet" href="components.css">
   <link rel="stylesheet" href="styles.css">
 </head>
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" hidden></div>
+
+<!-- MODAL -->
+<div 
+  class="modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="taskModalTitle"
+  hidden
+>
+  <h2 id="taskModalTitle">Create Task</h2>
+
+  <input type="text" class="input" placeholder="Task title" />
+
+  <div class="task-actions">
+    <button class="btn-secondary" id="cancelTaskModal">Cancel</button>
+    <button class="btn-primary">Save</button>
+  </div>
+</div>
+
 <body>
 
   <!-- HEADER -->
@@ -67,21 +89,86 @@
 
 <script>
   const themeToggle = document.getElementById('themeToggle');
-  const htmlEl = document.documentElement;
+const htmlEl = document.documentElement;
 
+const openBtn = document.getElementById('openModal');
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.modal-overlay');
+const closeBtn = document.getElementById('cancelTaskModal');
 
-  // Перевіряємо локальне збереження теми
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    htmlEl.setAttribute('data-theme', savedTheme);
+let lastFocusedElement;
+
+// тема
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  htmlEl.setAttribute('data-theme', savedTheme);
+}
+
+themeToggle.addEventListener('click', () => {
+  const currentTheme =
+    htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  htmlEl.setAttribute('data-theme', currentTheme);
+  localStorage.setItem('theme', currentTheme);
+});
+
+// OPEN MODAL
+openBtn.addEventListener('click', () => {
+  lastFocusedElement = document.activeElement;
+
+  modal.hidden = false;
+  overlay.hidden = false;
+
+  document.body.style.overflow = 'hidden';
+
+  const firstInput = modal.querySelector('input, button');
+  firstInput.focus();
+});
+
+// CLOSE MODAL
+function closeModal() {
+  modal.hidden = true;
+  overlay.hidden = true;
+
+  document.body.style.overflow = '';
+
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
   }
+}
 
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
 
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    htmlEl.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('theme', currentTheme); // збереження вибору користувача
-  });
+// ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !modal.hidden) {
+    closeModal();
+  }
+});
+
+// FOCUS TRAP
+modal.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab') return;
+
+  const focusable = modal.querySelectorAll(
+    'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
+  );
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (e.shiftKey) {
+    if (document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    }
+  } else {
+    if (document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+});
 </script>
 
 </html>

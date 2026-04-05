@@ -6,9 +6,10 @@
 
   --color-danger: #dc2626;
   --color-danger-hover: #b91c1c;
-
-  --color-success: #16a34a;
-  --color-warning: #f59e0b;
+  
+  --color-success: #2e7d32;
+  --color-warning: #FFC107;
+  --color-warning-text: #000000;
 
   --color-bg: #f9fafb;       /* Фоновий колір сторінки */
   --color-surface: #ffffff;  /* Фон компонентів */
