@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>UrbanWear — Каталог</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section class="catalog">
+    <div class="filters">
+      <select id="categoryFilter">
+        <option value="all">Всі категорії</option>
+        <option value="hoodie">Худі</option>
+        <option value="tshirt">Футболки</option>
+        <option value="jacket">Куртки</option>
+      </select>
+      <select id="sortOrder">
+        <option value="asc">Ціна: дешевші спочатку</option>
+        <option value="desc">Ціна: дорожчі спочатку</option>
+      </select>
+      <span id="counter"></span>
+    </div>
+    <div class="products" id="productGrid"></div>
+  </section>
+  <script src="apps.js"></script>
+</body>
+</html>
