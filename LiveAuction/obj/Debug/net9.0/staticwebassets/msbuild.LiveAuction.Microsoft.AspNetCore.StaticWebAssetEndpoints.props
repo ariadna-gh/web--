@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/LiveAuction/index.coch89m60b.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"coch89m60b"},{"Name":"integrity","Value":"sha256-lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0="},{"Name":"label","Value":"_content/LiveAuction/index.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"5993"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=\u0022"},{"Name":"Last-Modified","Value":"Thu, 09 Apr 2026 19:26:47 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/LiveAuction/index.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"5993"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=\u0022"},{"Name":"Last-Modified","Value":"Thu, 09 Apr 2026 19:26:47 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

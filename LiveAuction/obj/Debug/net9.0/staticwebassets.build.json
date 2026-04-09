@@ -1,0 +1,362 @@
+{
+  "Version": 1,
+  "Hash": "NhBzGDVFZPUnzXITQFiAK2ZcF8Wn4OWMaY/2AawL/mc=",
+  "Source": "LiveAuction",
+  "BasePath": "_content/LiveAuction",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LiveAuction\\wwwroot",
+      "Source": "LiveAuction",
+      "ContentRoot": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\",
+      "BasePath": "_content/LiveAuction",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\obj\\Debug\\net9.0\\compressed\\jfx30d03ez-coch89m60b.gz",
+      "SourceId": "LiveAuction",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/LiveAuction",
+      "RelativePath": "index#[.{fingerprint=coch89m60b}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "if4tkz4yi8",
+      "Integrity": "UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\index.html",
+      "SourceId": "LiveAuction",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\",
+      "BasePath": "_content/LiveAuction",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "coch89m60b",
+      "Integrity": "lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "index.coch89m60b.html",
+      "AssetFile": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\obj\\Debug\\net9.0\\compressed\\jfx30d03ez-coch89m60b.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000432900433"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2309"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 19:26:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "coch89m60b"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0="
+        }
+      ]
+    },
+    {
+      "Route": "index.coch89m60b.html",
+      "AssetFile": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5993"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 19:26:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "coch89m60b"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0="
+        }
+      ]
+    },
+    {
+      "Route": "index.coch89m60b.html.gz",
+      "AssetFile": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\obj\\Debug\\net9.0\\compressed\\jfx30d03ez-coch89m60b.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2309"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 19:26:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "coch89m60b"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\obj\\Debug\\net9.0\\compressed\\jfx30d03ez-coch89m60b.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000432900433"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2309"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 19:26:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5993"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 19:26:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lPlZmYXdjyaWE5daldh5udKKlCRL3Lz7EdJPmThzJy0="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.gz",
+      "AssetFile": "C:\\Users\\ARIADNA\\labs web\\lab10\\LiveAuction\\obj\\Debug\\net9.0\\compressed\\jfx30d03ez-coch89m60b.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2309"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 19:26:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-UoRjzkEKaciPNP6V3wXX6S9YdFAgizM/0Y8wquS0buk="
+        }
+      ]
+    }
+  ]
+}

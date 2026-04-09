@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Auction</title>
+  <div id="viewerCount">👁 0 глядачів</div>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      max-width: 640px;
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+
+    h1 { font-size: 1.6rem; margin-bottom: 8px; }
+    .subtitle { color: #888; margin-bottom: 32px; font-size: 0.9rem; }
+
+    .lot-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .lot-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .lot-emoji  { font-size: 2rem; }
+    .lot-title  { font-weight: 600; font-size: 1.05rem; }
+
+    .lot-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #f0b429;
+      margin-bottom: 4px;
+    }
+
+    .lot-bidder { font-size: 0.82rem; color: #888; margin-bottom: 16px; }
+
+    .bid-row { display: flex; gap: 8px; }
+
+    input {
+      background: #111;
+      border: 1px solid #333;
+      color: #f0f0f0;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 0.95rem;
+    }
+
+    input::placeholder { color: #555; }
+    input.name-input { width: 130px; }
+    input.amount-input { width: 110px; }
+
+    button {
+      background: #f0b429;
+      color: #0f0f0f;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    button:hover { opacity: 0.85; }
+
+    .error { color: #e74c3c; font-size: 0.82rem; margin-top: 6px; }
+
+    .new-bid-flash {
+      border-color: #f0b429;
+      transition: border-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔨 Live Auction</h1>
+<p class="subtitle">Натисни "Ставка" щоб запропонувати свою ціну</p>
+
+<div id="lots"></div>
+
+<script>
+  const API = 'http://localhost:5166/api/lots'
+  const WS_URL = 'ws://localhost:5166/ws'
+
+  // --- WebSocket ---
+  let ws
+
+  function connectWebSocket() {
+    ws = new WebSocket(WS_URL)
+
+    ws.onopen = () => {
+      console.log('WebSocket підключено')
+    }
+
+    // Отримали повідомлення від сервера
+    ws.onmessage = (event) => {
+  const message = JSON.parse(event.data)
+
+  if (message.type === 'bid_update') {
+    updateLotCard(message.lot)
+  }
+
+  if (message.type === 'viewer_update') {
+    document.getElementById('viewerCount').textContent =
+      `👁 ${message.count} глядачів`
+  }
+}
+
+    ws.onclose = () => {
+      console.log('WebSocket відключено, перепідключення через 3с...')
+      setTimeout(connectWebSocket, 3000)
+    }
+
+    ws.onerror = (err) => {
+      console.error('WebSocket помилка:', err)
+    }
+  }
+
+  // Оновлює ціну і лідера в конкретній картці без перемалювання всього списку
+  function updateLotCard(lot) {
+    const priceEl  = document.querySelector(`#lot-${lot.id} .lot-price`)
+    const bidderEl = document.querySelector(`#lot-${lot.id} .lot-bidder`)
+    const cardEl   = document.getElementById(`lot-${lot.id}`)
+
+    if (!priceEl) return  // картки ще не намальовані
+
+    priceEl.textContent  = `₴${lot.currentPrice.toLocaleString()}`
+    bidderEl.textContent = lot.topBidder ? `Лідер: ${lot.topBidder}` : 'Ставок ще немає'
+
+    // Короткий флеш щоб показати що ціна змінилась
+    cardEl.classList.add('new-bid-flash')
+    setTimeout(() => cardEl.classList.remove('new-bid-flash'), 800)
+  }
+
+  // --- REST ---
+  async function loadLots() {
+    const res = await fetch(API)
+    const lots = await res.json()
+    render(lots)
+  }
+
+  function render(lots) {
+    document.getElementById('lots').innerHTML = lots.map(lot => `
+      <div class="lot-card" id="lot-${lot.id}" onclick="loadLotDetails(${lot.id})">
+        <div class="lot-header">
+          <span class="lot-emoji">${lot.emoji}</span>
+          <span class="lot-title">${lot.title}</span>
+        </div>
+        <div class="lot-price">₴${lot.currentPrice.toLocaleString()}</div>
+        <div class="lot-bidder">
+          ${lot.topBidder ? `Лідер: ${lot.topBidder}` : 'Ставок ще немає'}
+        </div>
+        <div class="bid-row">
+          <input class="name-input"   id="name-${lot.id}"   placeholder="Ваше ім'я" />
+          <input class="amount-input" id="amount-${lot.id}" placeholder="Сума" type="number" />
+          <button onclick="placeBid(${lot.id})">Ставка ↑</button>
+        </div>
+        <div class="error" id="error-${lot.id}"></div>
+      </div>
+    `).join('')
+  }
+
+  async function loadLotDetails(id) {
+    const res = await fetch(`${API}/${id}`)
+    const lot = await res.json()
+    console.log('Деталі лоту:', lot)
+    }
+
+  async function placeBid(lotId) {
+    const bidder = document.getElementById(`name-${lotId}`).value.trim()
+    const amount = Number(document.getElementById(`amount-${lotId}`).value)
+    const errorEl = document.getElementById(`error-${lotId}`)
+    errorEl.textContent = ''
+
+    const res = await fetch(`${API}/${lotId}/bid`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bidder, amount })
+    })
+
+    if (!res.ok) {
+      const data = await res.json()
+      errorEl.textContent = data.error
+      return
+    }
+
+    // Не робимо loadLots() — WebSocket вже доставить оновлення всім вкладкам
+  }
+
+  // Запуск
+  connectWebSocket()
+  loadLots()
+</script>
+
+</body>
+</html>
