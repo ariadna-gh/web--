@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Crypto Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #0d0d0d;
+  color: #e8e8e8;
+  max-width: 780px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+
+h1 { font-size: 1.5rem; margin-bottom: 4px; }
+.subtitle { color: #666; font-size: 0.88rem; margin-bottom: 36px; }
+
+/* --- Секція моніторингу --- */
+.section-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.coins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+  min-height: 120px;
+}
+
+.coin-card {
+  background: #161616;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+}
+
+.coin-card.loading {
+  opacity: 0.4;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.coin-card.error {
+  border-color: #3a1a1a;
+  background: #160e0e;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.15; }
+}
+
+.coin-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.coin-icon { width: 28px; height: 28px; border-radius: 50%; }
+.coin-icon-placeholder {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; color: #555;
+}
+
+.coin-name   { font-weight: 600; font-size: 0.95rem; }
+.coin-symbol { font-size: 0.78rem; color: #555; text-transform: uppercase; }
+
+.coin-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #f0c040;
+  margin-bottom: 4px;
+}
+
+.coin-change {
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.coin-change.up   { color: #3dd68c; }
+.coin-change.down { color: #e05c5c; }
+
+.error-text {
+  color: #a04040;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+/* --- Пошук --- */
+.search-wrap { position: relative; margin-bottom: 40px; }
+
+.search-input {
+  width: 100%;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  color: #e8e8e8;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus { border-color: #444; }
+.search-input::placeholder { color: #444; }
+
+.search-status {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 6px;
+  min-height: 18px;
+}
+
+.search-results {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.search-results li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+
+.search-results li:hover { background: #1e1e1e; }
+.search-results li img   { width: 22px; height: 22px; border-radius: 50%; }
+.result-sym { color: #555; font-size: 0.78rem; text-transform: uppercase; }
+
+/* --- Стан помилки для всього блоку --- */
+.block-error {
+  background: #160e0e;
+  border: 1px solid #3a1a1a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #a04040;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>📊 Crypto Dashboard</h1>
+<p class="subtitle">Живі дані · CoinGecko API</p>
+
+<button id="refresh-btn" style="
+  margin-bottom: 20px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #1e1e1e;
+  color: #eee;
+  cursor: pointer;
+">
+  Оновити
+</button>
+
+<!-- Блок 1: моніторинг конкретних монет -->
+<div class="section-title">Відстежувані монети</div>
+<div id="coins-grid" class="coins-grid">
+  <!-- картки з'являться після завантаження -->
+</div>
+
+<!-- Блок 2: пошук -->
+<div class="section-title">Пошук монети</div>
+<div class="search-wrap">
+  <input
+    id="search-input"
+    class="search-input"
+    type="text"
+    placeholder="Введіть назву монети..."
+    autocomplete="off"
+  />
+  <div id="search-status" class="search-status"></div>
+  <ul id="search-results" class="search-results"></ul>
+</div>
+
+
+  <script>
+    const BASE = 'https://api.coingecko.com/api/v3'
+
+async function apiFetch(path, signal = null) {
+  const options = signal ? { signal } : {}
+  const res = await fetch(BASE + path, options)
+
+  if (!res.ok) {
+    const err = new Error(`HTTP ${res.status}`)
+    err.status = res.status
+    throw err
+  }
+
+  return res.json()
+}
+function renderCoinCard(coin) {
+  return `
+    <div class="coin-card">
+      <div class="coin-header">
+        <img class="coin-icon" src="${coin.image}" alt="${coin.symbol}" />
+        <div>
+          <div class="coin-name">${coin.name}</div>
+          <div class="coin-symbol">${coin.symbol}</div>
+        </div>
+      </div>
+      <div class="coin-price">$${coin.current_price.toLocaleString('en-US')}</div>
+      <div class="coin-change ${coin.price_change_percentage_24h >= 0 ? 'up' : 'down'}">
+        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'}
+        ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}% за 24г
+      </div>
+    </div>
+  `
+}
+
+function renderErrorCard(coinId, message) {
+  return `
+    <div class="coin-card error">
+      <div class="coin-header">
+        <div class="coin-icon-placeholder">?</div>
+        <div>
+          <div class="coin-name">${coinId}</div>
+          <div class="coin-symbol">помилка</div>
+        </div>
+      </div>
+      <div class="error-text">${message}</div>
+    </div>
+  `
+}
+const COINS = ['bitcoin', 'ethereum', 'solana', 'dogecoin']
+
+async function loadCoins() {
+  const grid = document.getElementById('coins-grid')
+  const btn  = document.getElementById('refresh-btn')
+
+  // 🔒 блокуємо кнопку
+  btn.disabled = true
+  btn.textContent = 'Завантаження…'
+
+  try {
+    grid.innerHTML = COINS.map(id => `
+      <div class="coin-card loading">
+        <div class="coin-header">
+          <div class="coin-icon-placeholder">…</div>
+          <div>
+            <div class="coin-name">${id}</div>
+            <div class="coin-symbol">завантаження</div>
+          </div>
+        </div>
+        <div class="coin-price">—</div>
+      </div>
+    `).join('')
+
+    const promises = COINS.map(id =>
+      apiFetch(`/coins/markets?vs_currency=usd&ids=${id}`)
+        .then(data => data[0])
+    )
+
+    const results = await Promise.allSettled(promises)
+
+    grid.innerHTML = results.map((result, i) => {
+      if (result.status === 'fulfilled') {
+        return renderCoinCard(result.value)
+      } else {
+        const msg = result.reason?.status === 429
+          ? 'Забагато запитів. Зачекайте хвилину.'
+          : result.reason?.message ?? 'Невідома помилка'
+        return renderErrorCard(COINS[i], msg)
+      }
+    }).join('')
+
+  } finally {
+    // розблоковуємо кнопку ЗАВЖДИ
+    btn.disabled = false
+    btn.textContent = 'Оновити'
+  }
+}
+function renderSearchResults(coins) {
+  const list = document.getElementById('search-results')
+
+  if (coins.length === 0) {
+    list.innerHTML = '<li style="color:#555; cursor:default">Нічого не знайдено</li>'
+    return
+  }
+
+  list.innerHTML = coins.slice(0, 6).map(coin => `
+    <li>
+      <img src="${coin.thumb}" alt="${coin.symbol}" />
+      <span>${coin.name}</span>
+      <span class="result-sym">${coin.symbol}</span>
+    </li>
+  `).join('')
+}
+let searchController = null
+
+async function searchCoins(query) {
+  const statusEl = document.getElementById('search-status')
+  const listEl   = document.getElementById('search-results')
+
+  if (!query.trim()) {
+    listEl.innerHTML  = ''
+    statusEl.textContent = ''
+    return
+  }
+
+  // Скасовуємо попередній запит якщо він ще в дорозі
+  if (searchController) {
+    searchController.abort()
+  }
+  searchController = new AbortController()
+
+  statusEl.textContent = 'Пошук…'
+
+  try {
+    const data = await apiFetch(`/search?query=${encodeURIComponent(query)}`, searchController.signal)
+    renderSearchResults(data.coins)
+    statusEl.textContent = `Знайдено: ${data.coins.length}`
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      // Запит скасований — це нормально, просто ігноруємо
+      return
+    }
+    listEl.innerHTML     = ''
+    statusEl.textContent = `Помилка: ${err.message}`
+  }
+}
+
+let debounceTimer = null
+
+document.getElementById('search-input').addEventListener('input', e => {
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    searchCoins(e.target.value)
+  }, 300)
+})
+loadCoins()
+document.getElementById('refresh-btn').addEventListener('click', loadCoins)
+  </script>
+</body>
+</html>
